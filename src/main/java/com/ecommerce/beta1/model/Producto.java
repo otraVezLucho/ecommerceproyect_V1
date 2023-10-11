@@ -1,27 +1,36 @@
 package com.ecommerce.beta1.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "productos")
 public class Producto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
-
     private String imagen;
-
     private double precio;
-
     private String descripcion;
-
     private String cantidad;
 
+    @ManyToOne
+    private Usuario usuario;
+
+    //Contructores
     public Producto() {
     }
 
-    public Producto(Integer id, String nombre, String imagen, double precio, String descripcion, String cantidad) {
+    public Producto(Integer id, String nombre, String imagen, double precio, String descripcion, String cantidad, Usuario usuario) {
+
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
         this.precio = precio;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
+        this.usuario = usuario;
     }
 
     public Integer getId() {
@@ -71,6 +80,15 @@ public class Producto {
     public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
 
     @Override
     public String toString() {

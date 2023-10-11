@@ -1,8 +1,16 @@
 package com.ecommerce.beta1.model;
 
+
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "usuarios") // nombre de la tabla
 public class Usuario {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Esta anotacion permite a que el atributo id sea autoincrementable
     private Integer id;
     private String nombre;
     private String userName;
@@ -11,10 +19,14 @@ public class Usuario {
     private String telefono;
     private String tipo;
     private String clave;
+    @OneToMany(mappedBy = "usuario")
+    private List<Producto> listaProductos; // Se usa para obtener una lista de los productos que ha pedido el usuario
+
+    //obtener una lista de ordenes de un usuario
+    @OneToMany(mappedBy = "usuario")
+    private List<Orden> ordenes;
 
     // Constructores
-
-
     public Usuario() {
     }
 
@@ -94,4 +106,12 @@ public class Usuario {
         this.clave = clave;
     }
 
+
+    public List<Producto> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void setListaProductos(List<Producto> listaProductos) {
+        this.listaProductos = listaProductos;
+    }
 }
