@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class PruductoServiceImplementacion implements ProductoService{
+public class PruductoServiceImplementacion implements ProductoService {
 
     @Autowired // Sirve para imdicar que estamos inyectando a esta clase un objeto
     private ProductoRepository productoRepository;
