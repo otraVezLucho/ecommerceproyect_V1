@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductoController  {
 
     // variable tipo logger para hacer tests en el backend
-    private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
+
+
     //Metodos para redirigir
 
     @GetMapping("")//Se usa con comillas vacias para que se mapee a lo que indica productos
