@@ -13,9 +13,7 @@ public class Usuario {
     private String clave;
 
     // Constructores
-
-
-    public Usuario() {
+   public Usuario() {
     }
 
     public Usuario(Integer id, String nombre, String userName, String correo, String direccion, String telefono, String tipo, String clave) {
