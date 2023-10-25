@@ -1,6 +1,13 @@
 package com.ecommerce.beta1.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "productos")
 public class Producto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
 
@@ -12,18 +19,27 @@ public class Producto {
 
     private String cantidad;
 
+    @ManyToOne
+    private Usuario usuario; // Este atributo se va a relacionar con la tabla de usuario
+
+
+
+    //Constructores
     public Producto() {
     }
 
-    public Producto(Integer id, String nombre, String imagen, double precio, String descripcion, String cantidad) {
+    public Producto(Integer id, String nombre, String imagen, double precio, String descripcion, String cantidad, Usuario usuario) {
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
         this.precio = precio;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
+        this.usuario = usuario;
     }
 
+
+    //Metodos getter y setters
     public Integer getId() {
         return id;
     }
@@ -72,6 +88,16 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+
+    // ToString metodo
     @Override
     public String toString() {
         return "Producto{" +

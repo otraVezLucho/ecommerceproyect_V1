@@ -1,8 +1,15 @@
 package com.ecommerce.beta1.model;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name="usuarios") // Si no coloco esta anotacion se crearia la tabla con el mismo nombre de la clase.
 public class Usuario {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
     private String userName;
@@ -11,6 +18,13 @@ public class Usuario {
     private String telefono;
     private String tipo;
     private String clave;
+
+    // como saber que relaciones tiene la entidad Usuario?... con la especificacion (mappedBy = "")
+    @OneToMany(mappedBy = "usuario") //la especificacion (mappedBy = "usuario") indica que entidad es la principal o la que va a mappear las otras entidades relacionadas
+    private List<Producto> productos;
+    @OneToMany(mappedBy = "usuario")
+    private List<Orden> ordenes;
+
 
     // Constructores
    public Usuario() {
@@ -92,4 +106,11 @@ public class Usuario {
         this.clave = clave;
     }
 
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 }

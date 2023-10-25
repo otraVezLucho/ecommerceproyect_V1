@@ -1,12 +1,25 @@
 package com.ecommerce.beta1.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "detallesOrdem")
 public class DetalleOrden {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Autoincremento de atributo id
     private Integer id;
     private String nombre;
     private double precio;
     private String cantidad;
     private String total;
+
+
+    @OneToOne
+    private Orden orden;
+
+    @ManyToOne
+    private Producto producto;
 
     public DetalleOrden() {
     }
@@ -57,6 +70,22 @@ public class DetalleOrden {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public Orden getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Orden orden) {
+        this.orden = orden;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     @Override

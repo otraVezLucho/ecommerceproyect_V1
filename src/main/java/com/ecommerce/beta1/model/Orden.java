@@ -1,13 +1,27 @@
 package com.ecommerce.beta1.model;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+
+@Entity
+@Table(name = "ordenes")
 public class Orden {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Esta anotacion de se usa para que el atributo de id sea autoincrementable
     private Integer id;
     private String numero;
     private Date fechaCreacion;
     private Date fechaIngreso;
     private double total;
+
+    @ManyToOne // Varias ordenes de 1 usuario
+    private Usuario usuario;
+
+    @OneToOne(mappedBy = "orden")
+    private DetalleOrden detalle;
 
     public Orden() {
     }
@@ -58,6 +72,23 @@ public class Orden {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public DetalleOrden getDetalle() {
+        return detalle;
+    }
+
+    //DUdablente este setter no tenga ningun uso
+    public void setDetalle(DetalleOrden detalle) {
+        this.detalle = detalle;
     }
 
     @Override
