@@ -18,7 +18,7 @@ public class DetalleOrden {
     @OneToOne
     private Orden orden;
 
-    @OneToOne
+    @ManyToOne // Varios productos pueden estar en el detalle de la orden
     private Producto producto;
 
     public DetalleOrden() {
