@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @RequestMapping("/productos")
 public class ProductoController {
 
-    //private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
+    // private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
 
     @GetMapping("") // Esta anotacion no tiene ningun valor
     public String show(){
