@@ -6,6 +6,7 @@ import com.ecommerce.beta1.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 //Esta clase se encarga de implementar los metodos CRUD que lo implementa o hereda de la interfaz de ProductoService
@@ -34,5 +35,10 @@ public class ProductoServiceImplementacion implements ProductoService{
     @Override
     public void delete(Integer id) {
         productoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Producto> findAll() {
+        return productoRepository.findAll();
     }
 }

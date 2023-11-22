@@ -1,12 +1,14 @@
 package com.ecommerce.beta1.controller;
 
 
+
 import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.model.Usuario;
 import com.ecommerce.beta1.service.ProductoService;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,10 @@ public class ProductoController {
     @Autowired // para que no haya que crear manualmente un objeto sin tener que instanciarlo y que lo haga el mismo contenedor de Spring
     private ProductoService productoService;
     @GetMapping("") // Esta anotacion no tiene ningun valor
-    public String show(){
+    public String show(Model model){ // El objeto tipo model lleva informacion del back end a la vista, en este caso la lista de productos a la vista show
+        model.addAttribute("productos",productoService.findAll()); // Se asigna como 1er valor el nombre del atributo y 2do valor el objeto que contiene la informacion en este caso una lista
+
+
         return "productos/show";
     }
 

@@ -53,11 +53,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-        <td ></td>
+      <tr th:each="p:${productos}"><!-- variable:${nombre de la variable asignada en el metodo show de producto controller que se uso en el metodo model.addAttribute() y va a imprimir lo que tiene productos en cada iteracion} -->
+        <td th:text="${p.nombre}"></td>
+        <td th:text="${p.precio}"></td>
+        <td th:text="${p.descripcion}"></td>
+        <td th:text="${p.cantidad}"></td>
         <td><a  class="btn btn-warning" href="">Editar</a> </td>
         <td><a  class="btn btn-danger" href="">Eliminar</a> </td>
       </tr>       
