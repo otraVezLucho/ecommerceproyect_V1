@@ -31,7 +31,6 @@ public class ProductoController {
     @GetMapping("") // Esta anotacion no tiene ningun valor
     public String show(Model model){ // El objeto tipo Model lleva informacion del back end a la vista, en este caso la lista de productos a la vista show
         model.addAttribute("productos",productoService.findAll()); // Se asigna como 1er valor el nombre del atributo y 2do valor el objeto que contiene la informacion en este caso una lista
-
         return "productos/show";
     }
 
@@ -42,24 +41,29 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto){
-        LOGGER.info("este es el objeto producto {}",producto); // El metodo toString de la entidad Producto es lo que se va a mostrar en consola si no hay error y esa es la funcion de LOOGER
+    public String save(Producto producto) {
+        LOGGER.info("este es el objeto producto {}", producto); // El metodo toString de la entidad Producto es lo que se va a mostrar en consola si no hay error y esa es la funcion de LOOGER
         // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado
-        Usuario usuario1 = new Usuario(1,"","","","","","","");
+        Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(usuario1);
         productoService.save(producto);
         return "redirect:/productos";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
-        Producto producto = new Producto();
-        Optional<Producto> optionalProducto = productoService.get(id);
-        producto = optionalProducto.get();
-
-        LOGGER.info("producto: {}",producto);
-        model.addAttribute("producto",producto);
+    @GetMapping("/edit/{id}")// redirige el link a la pagina edit con la informacion del id del producto selecionado
+    public String edit(@PathVariable Integer id, Model model){ // la anotacion @PathVariable mapea el id que indica la url a la variable id de los parametros y model se usa para
+        Producto producto = new Producto(); // este objeto tipo producto almacenar el producto buscado
+        Optional<Producto> optionalProducto = productoService.get(id); // el metodo productoService.get(id) verifica si el id existe en la DB y lo asigna a optionalProducto para poderlo asignar a la variable producto
+        producto = optionalProducto.get(); // trae el objeto que se solicito y para saber si lo encontro se usa LOGGER
+        LOGGER.info("producto: {}",producto); // Trae a consola toda la info del producto para verificar si lo encontro...
+        model.addAttribute("producto",producto); // El nombre de la variable es la misma que se coloco en el archivo html en este caso "producto"
         return"productos/edit";
+    }
+
+    @PostMapping("/update")
+    public String update (Producto producto){
+        productoService.update(producto);
+        return "redirect:/productos";
     }
 
 }
