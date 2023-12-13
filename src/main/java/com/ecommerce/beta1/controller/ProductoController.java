@@ -5,15 +5,15 @@ package com.ecommerce.beta1.controller;
 import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.model.Usuario;
 import com.ecommerce.beta1.service.ProductoService;
+import com.ecommerce.beta1.service.UploadFileService;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 //import java.util.logging.Logger; cuando se usa org.slf4j.* no se usa esta por eso la comento
@@ -25,8 +25,12 @@ public class ProductoController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class); //busca por nombre de la clase
 
-    @Autowired // para que no haya que crear manualmente un objeto sin tener que instanciarlo y que lo haga el mismo contenedor de Spring
+    @Autowired
+    // para que no haya que crear manualmente un objeto sin tener que instanciarlo y que lo haga el mismo contenedor de Spring
     private ProductoService productoService;
+
+    @Autowired
+    private UploadFileService upload;
 
     @GetMapping("") // Esta anotacion no tiene ningun valor
     public String show(Model model){ // El objeto tipo Model lleva informacion del back end a la vista, en este caso la lista de productos a la vista show
@@ -41,11 +45,29 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto) {
+    public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException { // Con la anotacion le indicamos de donde se debe traer el producto de la pagina de create.html linea 80 de id y name que corresponden al campo img y guardarlo en la variable file y finalmente se manda a la logica de imagen para que la pueda usar saveImage
         LOGGER.info("este es el objeto producto {}", producto); // El metodo toString de la entidad Producto es lo que se va a mostrar en consola si no hay error y esa es la funcion de LOOGER
         // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado
         Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(usuario1);
+        //////////////////////// Logica para guardar imagen
+
+        if(producto.getId()==null){ // esta validacion se hace cuando se crea un producto
+            String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
+            producto.setImagen(nombreImagen);
+        }//////////////////////////// para cuando se edita un producto pero no se cambia la imagen debe cargar la misma imagen
+        else{
+            if(file.isEmpty()){
+                Producto p = new Producto();
+                p = productoService.get(producto.getId()).get();
+                producto.setImagen(p.getImagen());
+            }else { // guardar una imagen nueva
+                String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
+                producto.setImagen(nombreImagen);
+            }
+        }
+
+        ////////////////////////
         productoService.save(producto);
         return "redirect:/productos";
     }
