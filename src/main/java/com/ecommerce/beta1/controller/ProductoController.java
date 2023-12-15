@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 //import java.util.logging.Logger; cuando se usa org.slf4j.* no se usa esta por eso la comento
 
 @Controller
@@ -50,23 +52,12 @@ public class ProductoController {
         // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado
         Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(usuario1);
-        //////////////////////// Logica para guardar imagen
 
+        //////////////////////// Logica para guardar imagen////////////////////////////////
         if(producto.getId()==null){ // esta validacion se hace cuando se crea un producto
             String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
             producto.setImagen(nombreImagen);
         }//////////////////////////// para cuando se edita un producto pero no se cambia la imagen debe cargar la misma imagen
-        else{
-            if(file.isEmpty()){
-                Producto p = new Producto();
-                p = productoService.get(producto.getId()).get();
-                producto.setImagen(p.getImagen());
-            }else { // guardar una imagen nueva
-                String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
-                producto.setImagen(nombreImagen);
-            }
-        }
-
         ////////////////////////
         productoService.save(producto);
         return "redirect:/productos";
@@ -83,13 +74,38 @@ public class ProductoController {
     }
 
     @PostMapping("/update")
-    public String update (Producto producto){
+    public String update (Producto producto, @RequestParam("img") MultipartFile file ) throws IOException {
+        //Cuando se edita el producto pero NO se cambia la imagen
+        if(file.isEmpty()){
+            Producto p = new Producto();
+            p = productoService.get(producto.getId()).get();
+            producto.setImagen(p.getImagen());
+        // Cuando tambien se edita la imagen
+        }else {
+            Producto p = new Producto();
+            p = productoService.get(producto.getId()).get(); // Debe retornar todo el objeto completo producto al que esta buscando con id
+
+        // Si la imagen que tiene no es la que tiene por defecto la debe borrar
+            if(!p.getImagen().equals("default.jpg")){
+                upload.deleteImage(p.getImagen()); // el parametro del metodo deleteImage recive un String que es el nombre de la imagen
+            }
+            String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
+            producto.setImagen(nombreImagen);
+        }
         productoService.update(producto);
         return "redirect:/productos";
     }
 
         @GetMapping("/delete/{id}")
         public String delete(@PathVariable Integer id){
+
+        //Si la imagen que se verifica tiene un nombre diferente a "default.jpg", se borrara.
+        Producto p = new Producto();
+        p = productoService.get(id).get(); // Debe retornar todo el objeto completo producto al que esta buscando con id
+
+        if(!p.getImagen().equals("default.jpg")){ // Si la imagen que tiene no es la que tiene por defecto la debe borrar
+            upload.deleteImage(p.getImagen()); // el parametro del metodo deleteImage recive un String que es el nombre de la imagen
+        }
         productoService.delete(id);
         return "redirect:/productos";
         }
