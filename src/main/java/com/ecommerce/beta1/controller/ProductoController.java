@@ -75,15 +75,15 @@ public class ProductoController {
 
     @PostMapping("/update")
     public String update (Producto producto, @RequestParam("img") MultipartFile file ) throws IOException {
+        //Obtener el usuario de ese producto
+        Producto p = new Producto();
+        p = productoService.get(producto.getId()).get(); // Debe retornar todo el objeto completo producto al que esta buscando con id
+
         //Cuando se edita el producto pero NO se cambia la imagen
         if(file.isEmpty()){
-            Producto p = new Producto();
-            p = productoService.get(producto.getId()).get();
             producto.setImagen(p.getImagen());
         // Cuando tambien se edita la imagen
         }else {
-            Producto p = new Producto();
-            p = productoService.get(producto.getId()).get(); // Debe retornar todo el objeto completo producto al que esta buscando con id
 
         // Si la imagen que tiene no es la que tiene por defecto la debe borrar
             if(!p.getImagen().equals("default.jpg")){
@@ -92,6 +92,8 @@ public class ProductoController {
             String  nombreImagen = upload.saveImage(file); // esto apunta a la clase servicio UploadFileService y este metodo genera una exception que debe ser capturada a nivel de metodo
             producto.setImagen(nombreImagen);
         }
+
+        producto.setUsuario(p.getUsuario()); // este metodo se va a encargar de colocar el usuario porque aun no hay logica para vincular un usuario a los productos, hay que hacerlo manual
         productoService.update(producto);
         return "redirect:/productos";
     }

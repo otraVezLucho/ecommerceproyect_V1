@@ -37,50 +37,16 @@
 
       <!-- Page Features -->
       <div class="row text-center">
+        <!-- Este elemento se va a iterar para poder mostrar todos los productos de acuerdo a la lista que este guardada -->
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">  <!-- en producto ponga lo que trae la variable productos desde el controlador AdministradorController-->
           <div class="card h-100">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+            <img class="card-img-top" th:src="@{/images/{img} (img=${producto.imagen})}" alt="">  <!-- la primera expresion indica donde obtenerlos recursos y dentro de las llaves hay ina variable y la segunda exprecion idica que en cada interaccion obtenga la imagen  Aca es donde se apunta a ResourseWebConfiguration en donde se especifica de donde debe obtener los recursos -->
             <div class="card-body">
-              <p class="card-text">Nombre del producto.</p>
+              <p class="card-text" th:text="${producto.nombre}"></p>
             </div>
             <div class="card-footer">
               <a href="productohome.html" class="btn btn-success">Ver producto</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card h-100">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <p class="card-text">Nombre del producto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-success">Ver producto</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card h-100">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <p class="card-text">Nombre del producto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-success">Ver producto</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card h-100">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <p class="card-text">Nombre del producto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-success">Ver producto</a>
             </div>
           </div>
         </div>
