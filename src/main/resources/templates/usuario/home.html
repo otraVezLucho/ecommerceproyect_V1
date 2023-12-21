@@ -19,30 +19,16 @@
 
 <body>
 
-<!-- Navigation -->
-<div th:include = "administrador/template_admin.html::header">  </div>
-
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link"
-          href="carrito.html">Carrito</a></li>
-          <li class="nav-item"><a class="nav-link"
-            href="login.html">Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <!-- Navigation Aca se va a heredar la plantilla que se creo en template_usuario -->
+  <div th:include="usuario/template_usuario.html::header">
+  </div>
 
     <!-- Page Content -->
     <div class="container">
 
       <!-- Jumbotron Header -->
       <header class="jumbotron my-4">
-        <h1 class="display-3">Bienvenido a Spring Ecommerce 2021</h1>
+        <h1 class="display-3">Bienvenido a Spring Ecommerce 2023</h1>
         <p class="lead">Tu tienda de productos en Línea</p>
       </header>
 
@@ -67,7 +53,7 @@
     <!-- /.container -->
 
   <!-- Footer -->
-  <div th:include = "administrador/template_admin.html::footer"> </div>
+  <div th:include = "usuario/template_usuario.html::footer"> </div>
 
 
   <!-- Bootstrap core JavaScript -->
