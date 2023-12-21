@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -31,7 +32,8 @@ public class HomeController {
         return "usuario/home";
     }
 
-    @GetMapping("productohome/{id}") // Indica que va a obtener la informacion de solo el producto que indica la variable id
+    @GetMapping("productohome/{id}") // Indica que va a obtener la informacion de solo el producto que indica
+    // la variable id
     public String productoHome(@PathVariable Integer id,Model model){
         Producto producto = new Producto();
         Optional<Producto> productoOptional= productoService.get(id);
@@ -41,5 +43,9 @@ public class HomeController {
         return"usuario/productohome";
     }
 
+    @PostMapping("/cart")
+    public String addCart(){
+        return"usuario/carrito";
+    }
 
 }
