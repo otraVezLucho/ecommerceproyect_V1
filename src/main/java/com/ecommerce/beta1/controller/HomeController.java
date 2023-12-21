@@ -1,5 +1,6 @@
 package com.ecommerce.beta1.controller;
 
+import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.service.ProductoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
 
 
 @Controller
@@ -30,8 +32,14 @@ public class HomeController {
     }
 
     @GetMapping("productohome/{id}") // Indica que va a obtener la informacion de solo el producto que indica la variable id
-    public String productoHome(@PathVariable Integer id){
+    public String productoHome(@PathVariable Integer id,Model model){
+        Producto producto = new Producto();
+        Optional<Producto> productoOptional= productoService.get(id);
+        producto = productoOptional.get();
+        model.addAttribute("producto", producto);
         log.info("LOGGER FUNCIONANDO: Id producto enviado como parametro {}",id);
         return"usuario/productohome";
     }
+
+
 }
