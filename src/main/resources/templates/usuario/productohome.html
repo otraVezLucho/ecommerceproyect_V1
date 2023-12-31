@@ -40,13 +40,14 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6"> <!-- ESTOY EN EL VIDEO 24 VERIFICANDO NUEVAMENTE EL CODIGO PORQUE EL getTotal esta retornando null -->
               <a href="#"> <img class="img-fluid rounded"
                 th:src="@{/images/{img} (img=${producto.imagen})}"  alt="">
               </a>
             </div>
             <div class="col-lg-6">
               <form th:action="@{/cart}" method="POST">
+                <input type="hidden" th:value="${producto.id}" name="id"> <!-- IMPORTANTE este campo va a guardar el ID del producto para poder enviarlo al controlador y usarlo en e carrito de compras -->
                 <h2 class="card-title" th:text="${producto.nombre}"></h2>
 
                 <ul class="list-group">
@@ -61,7 +62,7 @@
                 </ul>
 
 
-                <button type="submit"  class="btn btn-dark">Añadir al carrito </button>
+                <button type="submit"  class="btn btn-dark" >Añadir al carrito </button>
 
               </form>
             </div>

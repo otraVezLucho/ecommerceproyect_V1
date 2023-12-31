@@ -12,7 +12,7 @@ public class DetalleOrden {
     private String nombre;
     private double precio;
     private String cantidad;
-    private String total;
+    private Double total;
 
 
     @OneToOne
@@ -24,7 +24,7 @@ public class DetalleOrden {
     public DetalleOrden() {
     }
 
-    public DetalleOrden(Integer id, String nombre, double precio, String cantidad, String total) {
+    public DetalleOrden(Integer id, String nombre, double precio, String cantidad, Double total) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -64,11 +64,11 @@ public class DetalleOrden {
         this.cantidad = cantidad;
     }
 
-    public String getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
