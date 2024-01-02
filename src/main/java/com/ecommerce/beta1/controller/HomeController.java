@@ -73,8 +73,21 @@ public class HomeController {
         detalleOrden.setTotal(producto.getPrecio()*cantidad); //
         detalleOrden.setProducto(producto); // esta asignacion se usa para poder asignar la clave foranea
 
-        detalles.add(detalleOrden);// añade cada producto orden a la lista
 
+
+        //OJO REVISAR ESTA VALIDACION PORQUE DEBERIA SOLAMENTE INCREMENTAR EL VALOR DE LA CANTIDAD DEL PRODUCTO QUE YA ESTA EN EL CARRITO EN VEZ DE NO AGREGARLO
+
+        // validacion para que el producto no se agrege como segundo producto si ya hay uno en el mismo tipo en el carrito
+        Integer idProducto= producto.getId();
+        //Por medio de una funcion lamda se va a validar que verifique si el Id que se agrego nuevamente ya se encuentra en la lista actual del carrito
+        boolean ingresado = detalles.stream().anyMatch(p -> p.getProducto().getId() == idProducto); // Funciona mas rapido que un bucle for
+        if (!ingresado){
+            detalles.add(detalleOrden);// añade cada producto orden a la lista
+        }
+
+
+
+        // Funciona mas rapido que un bucle for
         sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum(); // La variable dt está representando cada elemento de la lista detalles. Esta recorriendo la lista de detalles, tomando el total de cada uno y sumándolos y guardando el valor de la suma en la variable sumaTotal
         orden.setTotal(sumaTotal);
 
@@ -102,6 +115,7 @@ public class HomeController {
 
         //sumatoria para recalcular los productos
         double sumaTotal =0;
+        // Funciona mas rapido que un bucle for
         sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum(); // La variable dt está representando cada elemento de la lista detalles. Esta recorriendo la lista de detalles, tomando el total de cada uno y sumándolos y guardando el valor de la suma en la variable sumaTotal
 
         orden.setTotal(sumaTotal);
@@ -109,6 +123,15 @@ public class HomeController {
         model.addAttribute("orden",orden);
 
         return "usuario/carrito";
+    }
+
+    @GetMapping("/getCart")
+    public String getCart(Model model){
+
+        model.addAttribute("cart",detalles);
+        model.addAttribute("orden",orden);
+
+        return"/usuario/carrito";
     }
 }
 
