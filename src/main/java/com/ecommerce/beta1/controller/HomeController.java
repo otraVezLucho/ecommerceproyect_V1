@@ -51,6 +51,9 @@ public class HomeController {
         return"usuario/productohome";
     }
 
+
+
+    // Funcionalidad para poder agragar al carrito...
     @PostMapping("/cart")
     public String addCart(@RequestParam Integer id,@RequestParam Integer cantidad, Model model){
 
@@ -80,4 +83,49 @@ public class HomeController {
         return"usuario/carrito";
     }
 
+    //Quitar productos del carrito
+    @GetMapping("/delete/cart/{id}")
+    public String deleteProductCart(@PathVariable Integer id,Model model){
+
+        //Quitar el producto de la lista y actualizar o recontar los totales y actualizar el carrito
+
+        //Lista nueva de productos para poder buscar el producto que se quiere borrar
+        List<DetalleOrden> ordenNueva = new ArrayList<DetalleOrden>();
+        for (DetalleOrden detalleOrden: detalles){
+            //Si encuentra un id que ya este en detalles, lo va a agregar a la lista de ordenes creada anteriormente
+            if (detalleOrden.getProducto().getId()!=id){
+                ordenNueva.add(detalleOrden);
+            }
+        }
+        //poner la nueva lista con los productos restantes
+        detalles=ordenNueva;
+
+        //sumatoria para recalcular los productos
+        double sumaTotal =0;
+        sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum(); // La variable dt está representando cada elemento de la lista detalles. Esta recorriendo la lista de detalles, tomando el total de cada uno y sumándolos y guardando el valor de la suma en la variable sumaTotal
+
+        orden.setTotal(sumaTotal);
+        model.addAttribute("cart",detalles);
+        model.addAttribute("orden",orden);
+
+        return "usuario/carrito";
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
