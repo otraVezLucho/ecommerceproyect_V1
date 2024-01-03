@@ -3,7 +3,10 @@ package com.ecommerce.beta1.controller;
 import com.ecommerce.beta1.model.DetalleOrden;
 import com.ecommerce.beta1.model.Orden;
 import com.ecommerce.beta1.model.Producto;
+import com.ecommerce.beta1.model.Usuario;
+import com.ecommerce.beta1.service.IUsuarioService;
 import com.ecommerce.beta1.service.ProductoService;
+import com.ecommerce.beta1.service.UsuarioServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class HomeController {
 
     @Autowired//para que inyecte el contenedor del framework
     private ProductoService productoService; // para obtener los productos
+    @Autowired
+    private IUsuarioService usuarioService;//  se va a obtener el usuario para poderlo enviar a la vista
 
     //Esta lista es para almacenar el detalle de la orden
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -134,8 +139,15 @@ public class HomeController {
         return"/usuario/carrito";
     }
 
+    //Metodo se encarga de llevar la informacion a la pagina de resumenorden la cual
     @GetMapping("/order")
-    public String resumenOrden (){
+    public String resumenOrden (Model model){
+
+        Usuario usuario = usuarioService.findById(1).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+
+        model.addAttribute("cart",detalles);
+        model.addAttribute("orden",orden);
+        model.addAttribute("usuario", usuario);
 
 
         return "usuario/resumenorden";
