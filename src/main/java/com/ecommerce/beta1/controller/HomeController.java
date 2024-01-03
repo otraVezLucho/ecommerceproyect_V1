@@ -59,7 +59,7 @@ public class HomeController {
 
         DetalleOrden detalleOrden = new DetalleOrden();
         Producto producto = new Producto();
-        double sumaTotal = 0; // Se coloca en 0 para que en la siguiente orden el carro quede de nuevo en 0
+        double sumaTotal = 0; // Se coloca en 0 para que en la siguiente orden el carro quede de nuevo en 0f
 
         Optional<Producto> optionalProducto = productoService.get(id);
         log.info("producto añadido: {}",optionalProducto.get()); // ver en consola la info del producto
@@ -132,6 +132,13 @@ public class HomeController {
         model.addAttribute("orden",orden);
 
         return"/usuario/carrito";
+    }
+
+    @GetMapping("/order")
+    public String resumenOrden (){
+
+
+        return "usuario/resumenorden";
     }
 }
 
