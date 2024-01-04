@@ -2,7 +2,7 @@ package com.ecommerce.beta1.service;
 
 
 import com.ecommerce.beta1.model.Producto;
-import com.ecommerce.beta1.repository.ProductoRepository;
+import com.ecommerce.beta1.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class ProductoServiceImplementacion implements ProductoService{
 
     //esta anotacion sirve para decir que estamos inyectando a esta clase un objeto
     @Autowired
-    private ProductoRepository productoRepository;
+    private IProductoRepository productoRepository;
 
     @Override
     public Producto save(Producto producto) {
