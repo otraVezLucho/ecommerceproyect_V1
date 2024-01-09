@@ -10,4 +10,7 @@ public interface IOrdenService {
 
     List<Orden> findAll(); // Metodo de interfaz para obtener una lista de ordenes o buscar una lista de ordenes
 
+    //Revisar V.32
+    String generadorNumeroOrden();
 }
+

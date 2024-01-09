@@ -3,7 +3,7 @@ package com.ecommerce.beta1.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "detallesOrdem")
+@Table(name = "detallesOrden")
 public class DetalleOrden {
 
     @Id
@@ -15,7 +15,7 @@ public class DetalleOrden {
     private Double total;
 
 
-    @OneToOne
+    @ManyToOne
     private Orden orden;
 
     @ManyToOne // Varios productos pueden estar en el detalle de la orden

@@ -26,7 +26,7 @@
                 <a class="navbar-brand" th:href="@{/}">Spring eCommerce</a> <!-- la exprecion @{/} indica que se debe dirigir a la raiz que en este caso seria home de usuario por medio del controller HomeController-->
 
                 <form class="form-inline my-2 my-lg-0" method="post"
-                      action="#">
+                      th:action="@{/search}">
                     <input class="form-control mr-sm-2" type="search"
                            placeholder="Buscar" aria-label="Search" name="nombre"
                            autocomplete="off">

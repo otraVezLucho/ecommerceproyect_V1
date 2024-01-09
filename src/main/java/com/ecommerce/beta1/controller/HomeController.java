@@ -4,9 +4,7 @@ import com.ecommerce.beta1.model.DetalleOrden;
 import com.ecommerce.beta1.model.Orden;
 import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.model.Usuario;
-import com.ecommerce.beta1.service.IUsuarioService;
-import com.ecommerce.beta1.service.ProductoService;
-import com.ecommerce.beta1.service.UsuarioServiceImpl;
+import com.ecommerce.beta1.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -30,6 +30,11 @@ public class HomeController {
     private ProductoService productoService; // para obtener los productos
     @Autowired
     private IUsuarioService usuarioService;//  se va a obtener el usuario para poderlo enviar a la vista
+
+    @Autowired
+    private IOrdenService ordenService;// para la persistencia
+    @Autowired
+    private IDetalleOrdenService detalleOrdenService;// para la persistencia
 
     //Esta lista es para almacenar el detalle de la orden
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -78,8 +83,6 @@ public class HomeController {
         detalleOrden.setTotal(producto.getPrecio()*cantidad); //
         detalleOrden.setProducto(producto); // esta asignacion se usa para poder asignar la clave foranea
 
-
-
         //OJO REVISAR ESTA VALIDACION PORQUE DEBERIA SOLAMENTE INCREMENTAR EL VALOR DE LA CANTIDAD DEL PRODUCTO QUE YA ESTA EN EL CARRITO EN VEZ DE NO AGREGARLO
 
         // validacion para que el producto no se agrege como segundo producto si ya hay uno en el mismo tipo en el carrito
@@ -90,14 +93,13 @@ public class HomeController {
             detalles.add(detalleOrden);// añade cada producto orden a la lista
         }
 
-
-
         // Funciona mas rapido que un bucle for
         sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum(); // La variable dt está representando cada elemento de la lista detalles. Esta recorriendo la lista de detalles, tomando el total de cada uno y sumándolos y guardando el valor de la suma en la variable sumaTotal
-        orden.setTotal(sumaTotal);
 
+        orden.setTotal(sumaTotal);
         model.addAttribute("cart",detalles);
         model.addAttribute("orden",orden);
+
         return"usuario/carrito";
     }
 
@@ -148,10 +150,44 @@ public class HomeController {
         model.addAttribute("cart",detalles);
         model.addAttribute("orden",orden);
         model.addAttribute("usuario", usuario);
-
-
         return "usuario/resumenorden";
     }
+
+    //Este metodo se va a ejecutar cuando se de click en generar en la pagina resumenorden
+    //Guardar orden
+    @GetMapping("/saveOrder")
+
+    public String saveOrder(){
+        Date fechaCreacion = new Date();
+        orden.setFechaCreacion(fechaCreacion);
+        orden.setNumero(ordenService.generadorNumeroOrden());
+
+        // guardar Usuario quemado
+        Usuario usuario = usuarioService.findById(1).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+        orden.setUsuario(usuario);
+        ordenService.save(orden);
+
+        //Guardar detalles
+        for(DetalleOrden dt:detalles){ // lee cada detalle orden de la lista y se va a
+            dt.setOrden(orden);
+            detalleOrdenService.save(dt);
+        }
+
+        //Limpiar valores lista por si el usuario quiere seguircomprando despues de la orden
+         orden = new Orden();
+        detalles.clear();
+
+        return "redirect:/";
+    }
+     @PostMapping("/search")
+    public String searchProduct(@RequestParam String nombre, Model model){ // La variable nombre es la misma que se encuentra en el formulario donde se encuentra el parametro name
+        log.info("Nombre del prodcuto: {}", nombre); //
+
+         List<Producto> productos = productoService.findAll().stream().filter(p-> p.getNombre().contains(nombre)).collect(Collectors.toList());// se va a realizar una busqueda filtrada recorriendo todos los productos existentes y una vez el atributo nombre contenga el valor ingresado con la variable (nombre) va a guardar todos sus resultados pasandolos a una lista con la funcion .collect(Collectors.toList()
+         model.addAttribute("productos",productos); // la primer variable  se reutiliza de la pagina home.html que es la lista de productos que se va a enviar, que ya esta en el home y la segunda variable es de donde se va a sacar la informacion para enviar
+
+         return"usuario/home";
+     }
 }
 
 
