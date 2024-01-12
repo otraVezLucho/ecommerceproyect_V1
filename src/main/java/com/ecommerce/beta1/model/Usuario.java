@@ -113,4 +113,20 @@ public class Usuario {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", userName='" + userName + '\'' +
+                ", correo='" + correo + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", clave='" + clave + '\'' +
+                ", productos=" + productos +
+                ", ordenes=" + ordenes +
+                '}';
+    }
 }
