@@ -42,13 +42,14 @@ public class UsuarioController {
 
         return "usuario/login";
     }
+    
     //Validacion de usuario. Verificar V38
     @PostMapping("/acceder")
     public String acceder (Usuario usuario, HttpSession session){ // HttpSession session va a recibir el id del usuario activo para poder indicar cual es el usuario activo en la sesion y se puede usar en el resto de lugares que necesita usar en la aplicaion
         logger.info("Accesos : {}",usuario);
         //Validar que el correo este en la base de datos
         Optional<Usuario> user = usuarioService.findByCorreo(usuario.getCorreo());
-        logger.info("Usuario obtenido de DB: {}", user);
+        logger.info("Usuario obtenido de DB: {}", user); // si agrega un .get() va a dar error cuando se ingrese un usuario incorrecto porque los valores van a ser null
 
             // IF DE VALIDACION MOMENTANIA SOLO ES PARA GUARDAR LA SESION, ANTES DE USAR SPRING SECURITY
             if (user.isPresent()){

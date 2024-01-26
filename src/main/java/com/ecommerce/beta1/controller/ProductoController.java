@@ -4,8 +4,11 @@ package com.ecommerce.beta1.controller;
 
 import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.model.Usuario;
+import com.ecommerce.beta1.service.IUsuarioService;
 import com.ecommerce.beta1.service.ProductoService;
 import com.ecommerce.beta1.service.UploadFileService;
+import com.ecommerce.beta1.service.UsuarioServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +33,8 @@ public class ProductoController {
     @Autowired
     // para que no haya que crear manualmente un objeto sin tener que instanciarlo y que lo haga el mismo contenedor de Spring
     private ProductoService productoService;
-
+    @Autowired
+    private IUsuarioService usuarioService;
     @Autowired
     private UploadFileService upload;
 
@@ -47,10 +51,11 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException { // Con la anotacion le indicamos de donde se debe traer el producto de la pagina de create.html linea 80 de id y name que corresponden al campo img y guardarlo en la variable file y finalmente se manda a la logica de imagen para que la pueda usar saveImage
+    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException { // Con la anotacion le indicamos de donde se debe traer el producto de la pagina de create.html linea 80 de id y name que corresponden al campo img y guardarlo en la variable file y finalmente se manda a la logica de imagen para que la pueda usar saveImage
         LOGGER.info("este es el objeto producto {}", producto); // El metodo toString de la entidad Producto es lo que se va a mostrar en consola si no hay error y esa es la funcion de LOOGER
-        // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado
-        Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
+        // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado temporal, luego se usa session identificar el usuario
+        //Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
+        Usuario usuario1 = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
         producto.setUsuario(usuario1);
 
         //////////////////////// Logica para guardar imagen////////////////////////////////

@@ -5,6 +5,8 @@ import com.ecommerce.beta1.model.Orden;
 import com.ecommerce.beta1.model.Producto;
 import com.ecommerce.beta1.model.Usuario;
 import com.ecommerce.beta1.service.*;
+import jakarta.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,8 @@ public class HomeController {
 
 
     @GetMapping("")
-    public String home (Model model){
+    public String home (Model model, HttpSession session){
+        log.info("sesion del usuario: {}",session.getAttribute("idUsuario")); // la variable "idUsuario" es el nombre de la variable que se asigno en el metodo acceder de la Clase UsuarioController
 
         model.addAttribute("productos", productoService.findAll() ); // productoService.findAll() va a traer todos los productos para colocarlos en la variable productos
         return "usuario/home";
@@ -143,9 +146,9 @@ public class HomeController {
 
     //Metodo se encarga de llevar la informacion a la pagina de resumenorden la cual
     @GetMapping("/order")
-    public String resumenOrden (Model model){
+    public String resumenOrden (Model model,HttpSession session){
 
-        Usuario usuario = usuarioService.findById(1).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
 
         model.addAttribute("cart",detalles);
         model.addAttribute("orden",orden);
@@ -157,13 +160,13 @@ public class HomeController {
     //Guardar orden
     @GetMapping("/saveOrder")
 
-    public String saveOrder(){
+    public String saveOrder(HttpSession session){
         Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generadorNumeroOrden());
 
         // guardar Usuario quemado
-        Usuario usuario = usuarioService.findById(1).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
         orden.setUsuario(usuario);
         ordenService.save(orden);
 
