@@ -20,10 +20,10 @@
 </head>
 
 <body>
-
-  <!-- Navigation -->
-  <div th:include = "administrador/template_admin.html::header">  </div>
-
+  <!-- ACA ESTA EL ERROR -->
+  <!-- Navigation / Se mostrara un header diferente dependiendo del valor de la variable sesion-->
+  <div th:include = "administrador/template_admin.html::header">  </div> <!-- Cuando la variable sesion devuelve null quiere decir que no hay usuarios logueados -->
+  <!--  <div th:include = "administrador/template_admin.html::header-user" th:unless="${sesion==null}" >  </div> cuando la variable sesion NO devuelve null hay algun usuario registrado -->
 
 
     <!-- Page Content -->

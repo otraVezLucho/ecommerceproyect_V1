@@ -50,8 +50,13 @@ public class HomeController {
         log.info("sesion del usuario: {}",session.getAttribute("idUsuario")); // la variable "idUsuario" es el nombre de la variable que se asigno en el metodo acceder de la Clase UsuarioController
 
         model.addAttribute("productos", productoService.findAll() ); // productoService.findAll() va a traer todos los productos para colocarlos en la variable productos
+
+        //SESSION
+        model.addAttribute("sesion",session.getAttribute("idusuario")); // Se le envia una variable sesion para determinar que header mostrar
+
         return "usuario/home";
     }
+
 
     @GetMapping("productohome/{id}") // Indica que va a obtener la informacion de solo el producto que indica
     // la variable id
@@ -63,7 +68,6 @@ public class HomeController {
         log.info("LOGGER FUNCIONANDO: Id producto enviado como parametro {}",id);
         return"usuario/productohome";
     }
-
 
 
     // Funcionalidad para poder agragar al carrito...
@@ -106,6 +110,7 @@ public class HomeController {
         return"usuario/carrito";
     }
 
+
     //Quitar productos del carrito
     @GetMapping("/delete/cart/{id}")
     public String deleteProductCart(@PathVariable Integer id,Model model){
@@ -135,14 +140,17 @@ public class HomeController {
         return "usuario/carrito";
     }
 
+
     @GetMapping("/getCart")
-    public String getCart(Model model){
+    public String getCart(Model model, HttpSession session){
 
         model.addAttribute("cart",detalles);
         model.addAttribute("orden",orden);
+        model.addAttribute("sesion",session.getAttribute("idusuario")); // obtener la sesion
 
         return"/usuario/carrito";
     }
+
 
     //Metodo se encarga de llevar la informacion a la pagina de resumenorden la cual
     @GetMapping("/order")
@@ -156,9 +164,11 @@ public class HomeController {
         return "usuario/resumenorden";
     }
 
+
     //Este metodo se va a ejecutar cuando se de click en generar en la pagina resumenorden
     //Guardar orden
     @GetMapping("/saveOrder")
+
 
     public String saveOrder(HttpSession session){
         Date fechaCreacion = new Date();
