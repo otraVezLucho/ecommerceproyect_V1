@@ -3,6 +3,7 @@ package com.ecommerce.beta1.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -17,11 +18,13 @@ public class Orden {
     private Date fechaIngreso;
     private double total;
 
+    //Revisar V.42
     @ManyToOne // Varias ordenes de 1 usuario
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "orden")
-    private DetalleOrden detalle;
+    //Revisar V.42
+    @OneToMany(mappedBy = "orden") // Una orden puede tener muchos detalles
+    private List<DetalleOrden> detalle; // se crea una lista porque detalles orden trae muchos datos.
 
     public Orden() {
     }
@@ -82,12 +85,11 @@ public class Orden {
         this.usuario = usuario;
     }
 
-    public DetalleOrden getDetalle() {
+    public List<DetalleOrden> getDetalle() {
         return detalle;
     }
 
-    //DUdablente este setter no tenga ningun uso
-    public void setDetalle(DetalleOrden detalle) {
+    public void setDetalle(List<DetalleOrden> detalle) {
         this.detalle = detalle;
     }
 

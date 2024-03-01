@@ -1,6 +1,7 @@
 package com.ecommerce.beta1.service;
 
 import com.ecommerce.beta1.model.Orden;
+import com.ecommerce.beta1.model.Usuario;
 import com.ecommerce.beta1.repository.IOrdenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class OrdenServiceImp implements IOrdenService{
         }
 
         return numeroConcatenado; // IMPORTANTEEEE va a devolver el string con el secuencial del numero de la orden
+    }
+
+    @Override
+    public List<Orden> findByUsuario(Usuario usuario) {
+        return ordenRepository.findByUsuario(usuario);
     }
 }

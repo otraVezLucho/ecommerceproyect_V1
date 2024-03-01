@@ -1,6 +1,8 @@
 package com.ecommerce.beta1.controller;
 
+import com.ecommerce.beta1.model.Orden;
 import com.ecommerce.beta1.model.Usuario;
+import com.ecommerce.beta1.service.IOrdenService;
 import com.ecommerce.beta1.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -21,6 +24,9 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService; //Para poder utilizar las operaciones crud
+
+    @Autowired
+    private IOrdenService ordenService; //Para poder utilizar las operaciones crud
 
     private final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     ///usuario/registro
@@ -69,6 +75,15 @@ public class UsuarioController {
     @GetMapping("/compras")
     public String obtenerCompras(Model model, HttpSession session){
         model.addAttribute("sesion",session.getAttribute("idusuario"));
+
+        //Primero se identifica el usuario para poder adquirir las ordenes que ha realizado
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+
+        //Se buscan las ordenes y se guardan en una lista que recive objetos de tipo Orden
+        List<Orden> ordenes = ordenService.findByUsuario(usuario);
+        //A travez del model se le pasa la lista que contiene la lista de ordenes
+        //NOTA: Esta lista se recorre desde la pagina de compras.html con las funciones de thymeleaf
+        model.addAttribute("ordenes", ordenes);
         return "usuario/compras";
     }
 }

@@ -1,6 +1,7 @@
 package com.ecommerce.beta1.service;
 
 import com.ecommerce.beta1.model.Orden;
+import com.ecommerce.beta1.model.Usuario;
 
 import java.util.List;
 
@@ -12,5 +13,8 @@ public interface IOrdenService {
 
     //Revisar V.32
     String generadorNumeroOrden();
+
+    //Revisar V.42
+    List<Orden> findByUsuario(Usuario usuario);
 }
 

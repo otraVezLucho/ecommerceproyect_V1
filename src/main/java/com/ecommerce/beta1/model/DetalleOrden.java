@@ -15,7 +15,7 @@ public class DetalleOrden {
     private Double total;
 
 
-    @ManyToOne
+    @ManyToOne // muchos a uno porque vvarios detalles pueden pertenecer a una orden
     private Orden orden;
 
     @ManyToOne // Varios productos pueden estar en el detalle de la orden
