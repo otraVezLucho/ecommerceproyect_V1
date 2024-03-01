@@ -21,7 +21,7 @@
 
   <!-- Navigation Aca se va a heredar la plantilla que se creo en template_usuario -->
   <div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}"></div> <!-- Cuando la variable sesion devuelve null quiere decir que no hay usuarios logueados -->
-  <div th:include="usuario/template_usuario.html::header" th:unless="${sesion==null}"></div> <!-- cuando la variable sesion NO devuelve null hay algun usuario registrado -->
+  <div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"></div> <!-- cuando la variable sesion NO devuelve null hay algun usuario registrado -->
 
 
     <!-- Page Content -->

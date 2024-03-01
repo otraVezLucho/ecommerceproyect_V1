@@ -47,13 +47,11 @@ public class HomeController {
 
     @GetMapping("")
     public String home (Model model, HttpSession session){
-        log.info("sesion del usuario: {}",session.getAttribute("idUsuario")); // la variable "idUsuario" es el nombre de la variable que se asigno en el metodo acceder de la Clase UsuarioController
+        log.info("sesion del usuario: {}",session.getAttribute("idusuario")); // la variable "idUsuario" es el nombre de la variable que se asigno en el metodo acceder de la Clase UsuarioController
 
-        model.addAttribute("productos", productoService.findAll() ); // productoService.findAll() va a traer todos los productos para colocarlos en la variable productos
-
+        model.addAttribute("productos", productoService.findAll()); // productoService.findAll() va a traer todos los productos para colocarlos en la variable productos
         //SESSION
         model.addAttribute("sesion",session.getAttribute("idusuario")); // Se le envia una variable sesion para determinar que header mostrar
-
         return "usuario/home";
     }
 
@@ -70,7 +68,7 @@ public class HomeController {
     }
 
 
-    // Funcionalidad para poder agragar al carrito...
+    // Funcionalidad para poder agregar al carrito...
     @PostMapping("/cart")
     public String addCart(@RequestParam Integer id,@RequestParam Integer cantidad, Model model){
 
@@ -156,7 +154,7 @@ public class HomeController {
     @GetMapping("/order")
     public String resumenOrden (Model model,HttpSession session){
 
-        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
 
         model.addAttribute("cart",detalles);
         model.addAttribute("orden",orden);
@@ -168,15 +166,13 @@ public class HomeController {
     //Este metodo se va a ejecutar cuando se de click en generar en la pagina resumenorden
     //Guardar orden
     @GetMapping("/saveOrder")
-
-
     public String saveOrder(HttpSession session){
         Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generadorNumeroOrden());
 
         // guardar Usuario quemado
-        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get(); // Se coloca un 1 porque aun no se ha desarrollado la parte de seguridad asi que manualmente se indica el id de usuario que esta asignado en la base de datos
         orden.setUsuario(usuario);
         ordenService.save(orden);
 

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +55,7 @@ public class UsuarioController {
             // IF DE VALIDACION MOMENTANIA SOLO ES PARA GUARDAR LA SESION, ANTES DE USAR SPRING SECURITY
             if (user.isPresent()){
 
-                session.setAttribute("idUsuario",user.get().getId()); // primer parametro sera un nombre y el segundo su valor en este caso el id del usuario
+                session.setAttribute("idusuario",user.get().getId()); // primer parametro sera un nombre y el segundo su valor en este caso el id del usuario
                 if(user.get().getTipo().equals("ADMIN")){
                     return"redirect:/administrador";
                 }else{
@@ -64,5 +65,10 @@ public class UsuarioController {
                 logger.info("Usuario no encontrado intente de nuevo:");
             }
         return"redirect:/";
+    }
+    @GetMapping("/compras")
+    public String obtenerCompras(Model model, HttpSession session){
+        model.addAttribute("sesion",session.getAttribute("idusuario"));
+        return "usuario/compras";
     }
 }

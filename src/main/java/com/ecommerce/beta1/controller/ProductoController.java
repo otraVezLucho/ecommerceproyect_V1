@@ -55,7 +55,7 @@ public class ProductoController {
         LOGGER.info("este es el objeto producto {}", producto); // El metodo toString de la entidad Producto es lo que se va a mostrar en consola si no hay error y esa es la funcion de LOOGER
         // Antes de hacer el guardado se necesita crear un usuario de prueba y asignarlo para que no salga error porque no hay usuario asignado temporal, luego se usa session identificar el usuario
         //Usuario usuario1 = new Usuario(1, "", "", "", "", "", "", "");
-        Usuario usuario1 = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
+        Usuario usuario1 = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         producto.setUsuario(usuario1);
 
         //////////////////////// Logica para guardar imagen////////////////////////////////
