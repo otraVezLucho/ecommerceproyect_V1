@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
 
   <meta charset="utf-8">
@@ -9,7 +8,6 @@
   <meta name="author" content="">
 
   <title>Spring eCommerce</title>
-
 
   <!-- Bootstrap core CSS NO OLVIDAR ANTEPONER EL (/) AL PRINCIPIO PARA QUE NO CONFUNDA LA RUTA CON LA RUTA DE CSS DE HOME YA QUE ESTE ARCHIVO ES UNA COPIA DE HOME-->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
@@ -21,23 +19,24 @@
 
 <body>
 
-  <!-- Navigation -->
+<!-- Navigation / Se mostrara un header diferente dependiendo del valor de la variable sesion-->
   <div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}"></div> <!-- Cuando la variable sesion devuelve null quiere decir que no hay usuarios logueados -->
   <div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"></div> <!-- cuando la variable sesion NO devuelve null hay algun usuario registrado -->
 
 
-  <!-- Page Content -->
+    <!-- Page Content -->
     <div class="container">
 
 
       <!-- Page Heading/Breadcrumbs -->
       <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Compras</small>
+        Spring eCommerce <small>Detalles</small>
       </h1>
 
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Compras</li>
+        <li class="breadcrumb-item"><a th:href="@{/usuario/compras}">Compras</a></li>
+        <li class="breadcrumb-item active">Detalle de Compra</li>
       </ol>
 
       <!-- Blog Post -->
@@ -48,18 +47,18 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">No. de Orden</th>
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Acción</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Producto</th>                  
+                  <th scope="col">Precio</th>
+                  <th scope="col">Total</th>                  
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="orden: ${ordenes}"><!-- <tr th:each="nombreVariable: ${nombreLista}">  -->
-                  <td th:text="${orden.numero}"></td>
-                  <td th:text="${orden.fechaCreacion}"></td>
-                  <td th:text="${orden.total}">Total</td>
-                  <td><a th:href="@{/usuario/detalle/{id} (id=${orden.id})}" class="btn btn-success">Ver Detalle</a></td>  <!-- va a abrir la pagina de detalle pero solamente con la informacion de detalle del id que obtiene de la session  -->
+                <tr th:each="detalle:${detalles}">
+                  <td th:text="${detalle.cantidad}"></td>
+                  <td th:text="${detalle.nombre}"></td>
+                  <td th:text="${detalle.precio}"></td>
+                  <td th:text="${detalle.total}"></td>
                 </tr>
               </tbody>
             </table>
@@ -70,14 +69,16 @@
   </div>
   <!-- /.container -->
 
-  <!-- Footer Aca se va a heredar la plantilla que se creo en template_usuario-->
-  <div th:include = "usuario/template_usuario.html::footer"> </div>
+<!-- Footer Aca se va a heredar la plantilla que se creo en template_usuario-->
+<div th:include = "usuario/template_usuario.html::footer"> </div>
 
-  <!-- Bootstrap core JavaScript con implementacion thymeleaf  -->
-  <!-- NO OLVIDAR ANTEPONER EL (/) AL PRINCIPIO PARA QUE NO CONFUNDA LA RUTA CON LA RUTA DE CSS DE HOME YA QUE ESTE ARCHIVO ES UNA COPIA DE HOME  -->
-  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- Bootstrap core JavaScript con implementacion thymeleaf  -->
+<!-- NO OLVIDAR ANTEPONER EL (/) AL PRINCIPIO PARA QUE NO CONFUNDA LA RUTA CON LA RUTA DE CSS DE HOME YA QUE ESTE ARCHIVO ES UNA COPIA DE HOME  -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 
 </body>
 
 </html>
+

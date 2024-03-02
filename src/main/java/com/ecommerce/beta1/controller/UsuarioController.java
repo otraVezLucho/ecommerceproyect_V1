@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -85,5 +86,21 @@ public class UsuarioController {
         //NOTA: Esta lista se recorre desde la pagina de compras.html con las funciones de thymeleaf
         model.addAttribute("ordenes", ordenes);
         return "usuario/compras";
+    }
+
+    @GetMapping("/detalle/{id}")
+    public  String detalleCompra (@PathVariable Integer id, HttpSession session,Model model){ // @PathVariable para permitir matear el parametro que viene en la url
+
+        logger.info("id de la irden: {}",id); // Mostrar la info por consola del detalle de la compra por id
+        //detalles de la orden por medio de un metodo de IOrdenService
+        Optional<Orden> orden = ordenService.findById(id);
+
+        //Enviar la informacion
+        //Lo que hace JPA es que cuando se llama la orden tambien trae los detalles como atributo
+        model.addAttribute("detalles",orden.get().getDetalle());
+        //session
+        model.addAttribute("sesion",session.getAttribute("idusuario"));
+
+        return "usuario/detallecompra"; // retorna a la pagina detallecompra.html
     }
 }
