@@ -88,6 +88,8 @@ public class UsuarioController {
         return "usuario/compras";
     }
 
+
+    //Revisar V.43
     @GetMapping("/detalle/{id}")
     public  String detalleCompra (@PathVariable Integer id, HttpSession session,Model model){ // @PathVariable para permitir matear el parametro que viene en la url
 
@@ -102,5 +104,12 @@ public class UsuarioController {
         model.addAttribute("sesion",session.getAttribute("idusuario"));
 
         return "usuario/detallecompra"; // retorna a la pagina detallecompra.html
+    }
+
+    //Revisar V.44
+    @GetMapping("/cerrar")
+    public String cerrarSesion (HttpSession session){
+        session.removeAttribute("idusuario");
+        return "redirect:/";
     }
 }
