@@ -82,7 +82,7 @@ public class HomeController {
         producto = optionalProducto.get();
 
         //se debe settear todos los atributos de la clase detalleOrden o se va a generar un error de tipo server 500 porque seguramente retornara algun valor como null
-        detalleOrden.setCantidad(String.valueOf(cantidad));
+        detalleOrden.setCantidad(cantidad);
         detalleOrden.setPrecio(producto.getPrecio());
         detalleOrden.setNombre(producto.getNombre());
         detalleOrden.setTotal(producto.getPrecio()*cantidad); //

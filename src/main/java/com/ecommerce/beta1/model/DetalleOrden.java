@@ -11,8 +11,8 @@ public class DetalleOrden {
     private Integer id;
     private String nombre;
     private double precio;
-    private String cantidad;
-    private Double total;
+    private double cantidad;
+    private double total;
 
 
     @ManyToOne // muchos a uno porque vvarios detalles pueden pertenecer a una orden
@@ -24,7 +24,7 @@ public class DetalleOrden {
     public DetalleOrden() {
     }
 
-    public DetalleOrden(Integer id, String nombre, double precio, String cantidad, Double total) {
+    public DetalleOrden(Integer id, String nombre, double precio, double cantidad, double total) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -56,19 +56,19 @@ public class DetalleOrden {
         this.precio = precio;
     }
 
-    public String getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Double getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
