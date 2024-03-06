@@ -1,6 +1,7 @@
 package com.ecommerce.beta1.controller;
 
 import com.ecommerce.beta1.model.Producto;
+import com.ecommerce.beta1.service.IOrdenService;
 import com.ecommerce.beta1.service.IUsuarioService;
 import com.ecommerce.beta1.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class AdministradorController {
     private ProductoService productoService; // se usa para poder acceder a los producto
 
     @Autowired
-    private IUsuarioService usuarioService;
+    private IUsuarioService usuarioService;// permite acceder a los metodos CRUD
+    @Autowired
+    private IOrdenService ordenService; // permite acceder a los metodos CRUD
 
     //REDIRECCIONAR A EL ARCHIVO home.html y mostrar todos los productos
     //
@@ -30,10 +33,18 @@ public class AdministradorController {
         return "administrador/home";
     }
 
+    //Revisar V.45
     @GetMapping("/usuarios")
     public String usuarios(Model model){
 
         model.addAttribute("usuarios",usuarioService.findAll());
         return"administrador/usuarios";
     }
+
+    @GetMapping("/ordenes")
+    public String ordenes(Model model){
+        model.addAttribute("ordenes",ordenService.findAll());
+        return "administrador/ordenes";
+    }
+
 }
